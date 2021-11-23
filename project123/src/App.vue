@@ -1,19 +1,61 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <div class="wrapper">
+      <header>my personal cost</header>
+      <main v-show="visible">
+        <add-payment-form @addNewPayment="addNewPayment"/>
+        <payments-display :items="paymentsList" />
+      </main>
+       <button v-on:click="visible=!visible">{{visible?'Скрыть':'Отобразить'}}</button>
+    </div>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import AddPaymentForm from './components/AddPaymentForm.vue';
+import PaymentsDisplay from "./components/PaymentsDisplay.vue";
 
 export default {
-  name: 'App',
+  name: "App",
   components: {
-    HelloWorld
-  }
-}
+    PaymentsDisplay,
+    AddPaymentForm,
+  },
+  data() {
+    return {
+      paymentsList: [],
+      visible: true
+    };
+  },
+  methods: {
+    fetchData() {
+      return [
+        {
+          date: "28.03.2020",
+          category: "Food",
+          value: 169,
+        },
+        {
+          date: "24.03.2020",
+          category: "Transport",
+          value: 360,
+        },
+        {
+          date: "24.03.2020",
+          category: "Food",
+          value: 532,
+        },
+      ];
+    },
+    addNewPayment (data) {
+      this.paymentsList = [this.paymentsList, data]
+    }
+
+  },
+  created() {
+    this.paymentsList = this.fetchData();
+  },
+};
 </script>
 
 <style>
